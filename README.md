@@ -7,7 +7,9 @@ ArkAssetRipper 是一个从Unity序列化文件 (*CAB-*\*, *\*.assets*, *\*.shar
 ArkAssetRipper 支持Unity从 `3.5.0` 到 `6000.2.X`的版本,但每个版本反编译出的资源质量有略小不同.   
 注:不支持Lzham格式.
 
+# 重要事项
 
+请安装[.NET 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 
 # 高级版本
 此为免费版,无高级版. 如果你想用高级版请移步官方链接,里面不包含反编译明日方舟游戏资源的功能.   
