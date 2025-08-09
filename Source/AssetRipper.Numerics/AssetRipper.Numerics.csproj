@@ -6,11 +6,4 @@
 		<IntermediateOutputPath>..\0Bins\obj\AssetRipper.Numerics\$(Configuration)\</IntermediateOutputPath>
 	</PropertyGroup>
 
-	<ItemGroup>
-	  <PackageReference Include="Costura.Fody" Version="6.0.0">
-	    <PrivateAssets>all</PrivateAssets>
-	          <IncludeAssets>runtime;compile;build; native; contentfiles; analyzers; buildtransitive;runtimes;</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
-
 </Project>

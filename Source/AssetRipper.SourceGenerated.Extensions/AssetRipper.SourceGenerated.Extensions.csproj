@@ -15,10 +15,6 @@
 	<ItemGroup>
 		<PackageReference Include="AssetRipper.Checksum" Version="1.1.0" />
 		<PackageReference Include="AssetRipper.SourceGenerated" Version="1.3.2" />
-		<PackageReference Include="Costura.Fody" Version="6.0.0">
-		  <PrivateAssets>all</PrivateAssets>
-		        <IncludeAssets>runtime;compile;build; native; contentfiles; analyzers; buildtransitive;runtimes;</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 
 </Project>

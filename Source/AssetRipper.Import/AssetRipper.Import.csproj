@@ -13,10 +13,6 @@
 		<PackageReference Include="AssetRipper.Mining.PredefinedAssets" Version="1.5.0" />
 		<PackageReference Include="AssetRipper.Primitives" Version="3.2.0" />
 		<PackageReference Include="AssetRipper.Tpk" Version="1.1.0" />
-		<PackageReference Include="Costura.Fody" Version="6.0.0">
-		  <PrivateAssets>all</PrivateAssets>
-		        <IncludeAssets>runtime;compile;build; native; contentfiles; analyzers; buildtransitive;runtimes;</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Samboy063.Cpp2IL.Core" Version="2022.1.0-development.1356" />
 	</ItemGroup>
 

@@ -7,10 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Costura.Fody" Version="6.0.0">
-		  <PrivateAssets>all</PrivateAssets>
-		        <IncludeAssets>runtime;compile;build; native; contentfiles; analyzers; buildtransitive;runtimes;</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Fmod5Sharp" Version="3.0.1" />
 		<PackageReference Include="NAudio.Core" Version="2.2.1" />
 		<PackageReference Include="NAudio.Vorbis" Version="1.5.0" />

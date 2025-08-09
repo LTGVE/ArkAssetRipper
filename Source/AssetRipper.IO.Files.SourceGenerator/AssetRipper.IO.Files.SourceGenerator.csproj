@@ -9,10 +9,6 @@
 	<ItemGroup>
 		<PackageReference Include="AssetRipper.IO.Endian" Version="2.0.2" />
 		<PackageReference Include="AssetRipper.Text.SourceGeneration" Version="1.2.2" />
-		<PackageReference Include="Costura.Fody" Version="6.0.0">
-		  <PrivateAssets>all</PrivateAssets>
-		        <IncludeAssets>runtime;compile;build; native; contentfiles; analyzers; buildtransitive;runtimes;</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 
 </Project>
