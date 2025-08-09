@@ -18,6 +18,8 @@
 		<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
 		<MetricsSupport>false</MetricsSupport>
 		<XmlResolverIsNetworkingEnabledByDefault>false</XmlResolverIsNetworkingEnabledByDefault>
+		<TargetFramework>net9.0</TargetFramework>
+		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
