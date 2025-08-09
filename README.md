@@ -9,7 +9,7 @@ ArkAssetRipper 支持Unity从 `3.5.0` 到 `6000.2.X`的版本,但每个版本反
 
 # 重要事项
 
-请安装[.NET 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+请安装[.NET 9.0](https://dotnet.microsoft.com/en-us/download/dotnet/9.0),否则你可能运行不了
 
 # 高级版本
 此为免费版,无高级版. 如果你想用高级版请移步官方链接,里面不包含反编译明日方舟游戏资源的功能.   
