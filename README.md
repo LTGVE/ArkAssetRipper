@@ -1,9 +1,5 @@
 # ArkAssetRipper
 
-[![](https://img.shields.io/github/downloads/AssetRipper/AssetRipper/total.svg)](https://github.com/AssetRipper/AssetRipper/releases)
-[![](https://img.shields.io/github/downloads/AssetRipper/AssetRipper/latest/total.svg)](https://github.com/AssetRipper/AssetRipper/releases/latest)
-[![](https://img.shields.io/github/v/release/AssetRipper/AssetRipper)](https://github.com/AssetRipper/AssetRipper/releases/latest)
-[![](https://weblate.samboy.dev/widgets/assetripper/-/gui/svg-badge.svg)](http://weblate.samboy.dev/engage/assetripper/)
 
 ArkAssetRipper 是一个从Unity序列化文件 (*CAB-*\*, *\*.assets*, *\*.sharedAssets*, etc.) 和资产文件 (*\*.unity3d*, *\*.bundle*, etc.) 中提取资源及转为Unity原生格式,   
 现在支持游戏《明日方舟》的改版资产文件的支持.
