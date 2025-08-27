@@ -22,6 +22,10 @@ ArkAssetRipper 支持Unity从 `3.5.0` 到 `6000.2.X`的版本,但每个版本反
 官方[Patreon](https://www.patreon.com/ds5678)   
 官方[功能与改进](https://assetripper.github.io/AssetRipper/articles/PremiumFeatures.html).   
 
+# 贡献
+如果你涉及此项目及反编译之类的相关知识，且对本项目有兴趣，欢迎随时提交和拉取请求。   
+感谢你们做出的贡献。
+
 # 捐赠
 此版本作者不接受任何捐赠.   
 如果你想支持,给个星足以.
