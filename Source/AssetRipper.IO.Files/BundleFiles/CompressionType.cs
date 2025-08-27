@@ -6,6 +6,7 @@ public enum CompressionType
 	Lzma = 1,
 	Lz4 = 2,
 	Lz4HC = 3,
-	Lzham = 4,
-	LZ4Inv=5,
+	LZ4Inv=4,
+	Endfield=5,
+	Lzham = 6,
 }

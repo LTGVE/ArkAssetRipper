@@ -2,14 +2,16 @@
 using AssetRipper.IO.Files.Exceptions;
 using AssetRipper.IO.Files.Streams;
 using AssetRipper.IO.Files.Streams.Smart;
+using AssetStudio;
 using K4os.Compression.LZ4;
-using SharpCompress.Common;
+
 using System.Buffers;
 
 namespace AssetRipper.IO.Files.BundleFiles.FileStream;
 
-internal sealed class BundleFileBlockReader : IDisposable
+public sealed  class BundleFileBlockReader : IDisposable
 {
+	public static bool enableEndfieldMode = false;
 	public BundleFileBlockReader(Stream stream, BlocksInfo blocksInfo)
 	{
 		m_stream = stream;
@@ -45,11 +47,13 @@ internal sealed class BundleFileBlockReader : IDisposable
 
 		using SmartStream entryStream = CreateStream(entry.Size);
 		long left = entry.Size;
+		Console.WriteLine($"EntrySize {entry.Size} BlockIndex {blockIndex} BlockCompressedOffset {blockCompressedOffset} BlockDecompressedOffset {blockDecompressedOffset} EntryOffsetInsideBlock {entryOffsetInsideBlock}");
 		m_stream.Position = m_dataOffset + blockCompressedOffset;
 
 		// copy data of all blocks used by current entry to new stream
 		while (left > 0)
 		{
+			Console.WriteLine($"Now copying {left} bytes from block {blockIndex} to entry stream.  Block Index {blockIndex}");
 			byte[]? rentedArray;
 
 			long blockStreamOffset;
@@ -66,8 +70,8 @@ internal sealed class BundleFileBlockReader : IDisposable
 			}
 			else
 			{
-				CompressionType compressType = block.CompressionType;
-				Console.WriteLine($"CompressType: {compressType}");
+				CompressionType compressType = (CompressionType)(block.Flags& StorageBlockFlags.CompressionTypeMask);
+				Console.WriteLine($"Block Index {blockIndex} CompressSize {block.CompressedSize} UncompressSize {block.UncompressedSize} CompressType: {compressType}");
 				if (compressType is CompressionType.None)
 				{
 					blockStreamOffset = m_dataOffset + blockCompressedOffset;
@@ -84,24 +88,64 @@ internal sealed class BundleFileBlockReader : IDisposable
 						case CompressionType.Lzma:
 							LzmaCompression.DecompressLzmaStream(m_stream, block.CompressedSize, m_cachedBlockStream, block.UncompressedSize);
 							break;
-						case CompressionType.Lzham:
+
 						case CompressionType.Lz4:
 						case CompressionType.Lz4HC:
-							uint uncompressedSize = block.UncompressedSize;
-							byte[] uncompressedBytes = new byte[uncompressedSize];
-							byte[] compressedBytes = new BinaryReader(m_stream).ReadBytes((int)block.CompressedSize);
-							int bytesWritten = compressType ==CompressionType.Lzham?  LZ4Inv.Instance.Decompress(compressedBytes,uncompressedBytes):LZ4Codec.Decode(compressedBytes, uncompressedBytes);
-							if (bytesWritten < 0)
+						case CompressionType.LZ4Inv:
 							{
-								DecompressionFailedException.ThrowNoBytesWritten(entry.PathFixed, compressType);
+								uint uncompressedSize = block.UncompressedSize;
+								byte[] uncompressedBytes = new byte[uncompressedSize];
+								byte[] compressedBytes = new BinaryReader(m_stream).ReadBytes((int)block.CompressedSize);
+								int bytesWritten = compressType == CompressionType.LZ4Inv ? LZ4Inv.Instance.Decompress(compressedBytes, uncompressedBytes) : LZ4Codec.Decode(compressedBytes, uncompressedBytes);
+								if (bytesWritten < 0)
+								{
+									DecompressionFailedException.ThrowNoBytesWritten(entry.PathFixed, compressType);
+								}
+								else if (bytesWritten != uncompressedSize)
+								{
+									DecompressionFailedException.ThrowIncorrectNumberBytesWritten(entry.PathFixed, compressType, uncompressedSize, bytesWritten);
+								}
+								new MemoryStream(uncompressedBytes).CopyTo(m_cachedBlockStream);
 							}
-							else if (bytesWritten != uncompressedSize)
-							{
-								DecompressionFailedException.ThrowIncorrectNumberBytesWritten(entry.PathFixed, compressType, uncompressedSize, bytesWritten);
-							}
-							new MemoryStream(uncompressedBytes).CopyTo(m_cachedBlockStream);
 							break;
+						case CompressionType.Endfield:
+							{
+								var compressedSize = (int)block.CompressedSize;
+								var uncompressedSize = (int)block.UncompressedSize;
 
+								var compressedBytes = ArrayPool<byte>.Shared.Rent(compressedSize);
+								var uncompressedBytes = ArrayPool<byte>.Shared.Rent(uncompressedSize);
+
+								var compressedBytesSpan = compressedBytes.AsSpan(0, compressedSize);
+								var uncompressedBytesSpan = uncompressedBytes.AsSpan(0, uncompressedSize);
+
+								try
+								{
+									BinaryReader binaryReader = new BinaryReader(m_stream);
+									binaryReader.Read(compressedBytesSpan); 
+									if (m_cachedBlockIndex == 0 && compressedBytesSpan[..32].Count((byte)0xa6) > 5)
+									{
+										Console.WriteLine($"Decrypting block with FairGuard... {compressedBytesSpan.Length} {compressedBytesSpan[0].ToString("X2")}");
+										FairGuardUtils.Decrypt(compressedBytesSpan);
+									}
+									var numWrite = Endfield.Instance.Decompress(compressedBytesSpan, uncompressedBytesSpan);
+									if (numWrite != uncompressedSize)
+									{
+										throw new IOException($"Lz4 decompression error, write {numWrite} bytes but expected {uncompressedSize} bytes");
+									}
+									m_cachedBlockStream.Write(uncompressedBytesSpan);
+								}
+		
+								finally
+								{
+									ArrayPool<byte>.Shared.Return(compressedBytes, true);
+									ArrayPool<byte>.Shared.Return(uncompressedBytes, true);
+								}
+							}
+							break;
+						case CompressionType.Lzham:
+							UnsupportedBundleDecompression.Throw(entry.PathFixed, compressType);
+							break;
 						default:
 							if (ZstdCompression.IsZstd(m_stream))
 							{

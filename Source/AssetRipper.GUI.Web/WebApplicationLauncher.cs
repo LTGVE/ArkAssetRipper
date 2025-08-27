@@ -1,3 +1,4 @@
+using AssetRipper.Assets;
 using AssetRipper.GUI.Web.Documentation;
 using AssetRipper.GUI.Web.Pages;
 using AssetRipper.GUI.Web.Pages.Assets;
@@ -10,6 +11,7 @@ using AssetRipper.GUI.Web.Pages.Settings;
 using AssetRipper.GUI.Web.Paths;
 using AssetRipper.Import.Logging;
 using AssetRipper.Import.Utils;
+using AssetRipper.IO.Files.BundleFiles.FileStream;
 using AssetRipper.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +40,13 @@ public static class WebApplicationLauncher
 
 	public static void Launch(string[] args)
 	{
+		if (args.Length==1&&args.Contains("--endfield")) {
+			BundleFileBlockReader.enableEndfieldMode = true;
+			Console.WriteLine("Endfield mode enabled.");
+			Launch();
+		    return;
+		}
+
 		Arguments? arguments = Arguments.Parse(args);
 
 		if (arguments is null)
