@@ -54,7 +54,9 @@ ArkAssetRipper 支持Unity从 `3.5.0` 到 `6000.2.X`的版本,但每个版本反
 
 ArkAssetsRipper 根据 [GNU General Public License v3.0](LICENSE.md) 开源.
 
-请确保你在此软件中解析出来的文件不被运用到违法犯罪活动中, 改版作者概不负责.   
+用户解包获取的资源,仅供个人学习, 未经过资源版权方的授权或许可,严禁将任何资源用于商业用途、进行非法牟利等作出任何可能会损害版权方的相关权利或利益及有对社会危害的行为。   
+关于此等问题，由版权方进行解释。我们没有权利或义务对此问题进行解释，且不承担任何相关责任与提供技术支持。
+
 
 Please be aware that using or distributing the output from this software may be against copyright legislation in your jurisdiction. You are responsible for ensuring that you're not breaking any laws.
 
